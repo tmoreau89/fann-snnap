@@ -26,6 +26,10 @@
 #include "config.h"
 #include "fann.h"
 
+#ifndef WEIGHT_LIM
+	#define WEIGHT_LIM 150
+#endif
+
 /*#define DEBUGTRAIN*/
 
 #ifndef FIXEDFANN
@@ -693,10 +697,10 @@ void fann_update_weights_quickprop(struct fann *ann, unsigned int num_data,
 
 		w += next_step;
 
-		if(w > 1500)
-			weights[i] = 1500;
-		else if(w < -1500)
-			weights[i] = -1500;
+		if(w > WEIGHT_LIM)
+			weights[i] = WEIGHT_LIM;
+		else if(w < -WEIGHT_LIM)
+			weights[i] = -WEIGHT_LIM;
 		else
 			weights[i] = w;
 
@@ -745,14 +749,14 @@ void fann_update_weights_irpropm(struct fann *ann, unsigned int first_weight, un
 		if(slope < 0)
 		{
 			weights[i] -= next_step;
-			if(weights[i] < -1500)
-				weights[i] = -1500;
+			if(weights[i] < -WEIGHT_LIM)
+				weights[i] = -WEIGHT_LIM;
 		}
 		else
 		{
 			weights[i] += next_step;
-			if(weights[i] > 1500)
-				weights[i] = 1500;
+			if(weights[i] > WEIGHT_LIM)
+				weights[i] = WEIGHT_LIM;
 		}
 
 		/*if(i == 2){
