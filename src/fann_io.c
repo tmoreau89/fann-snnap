@@ -57,6 +57,14 @@ FANN_EXTERNAL int FANN_API fann_save_to_fixed(struct fann *ann, const char *conf
 	return fann_save_internal(ann, configuration_file, 1);
 }
 
+
+/* Save the network as fixed point data.
+ */
+FANN_EXTERNAL int FANN_API fann_save_to_fixed_reduced_precision(struct fann *ann, const char *configuration_file, unsigned int decimal_point)
+{
+	return fann_save_internal(ann, configuration_file, decimal_point);
+}
+
 /* INTERNAL FUNCTION
    Used to save the network to a file.
  */
@@ -158,6 +166,13 @@ int fann_save_internal_fd(struct fann *ann, FILE * conf, const char *configurati
 			decimal_point = calculated_decimal_point;
 		}
 
+
+		// Because of backwards compatibility, if save_as_fixed is 1
+		// derive the shift value. Otherwise, force the shift value
+		// to be determined by the save_as_fixed argument
+		if (save_as_fixed > 1) {
+			decimal_point = decimal_point<save_as_fixed ? decimal_point : save_as_fixed;
+		}
 		fixed_multiplier = 1 << decimal_point;
 
 #ifdef DEBUG

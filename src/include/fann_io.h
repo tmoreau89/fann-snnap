@@ -96,5 +96,9 @@ FANN_EXTERNAL int FANN_API fann_save(struct fann *ann, const char *configuration
    This function appears in FANN >= 1.0.0.
 */ 
 FANN_EXTERNAL int FANN_API fann_save_to_fixed(struct fann *ann, const char *configuration_file);
-	
+
+/*
+This function behaves just as fann_save_to_fixed, except that the decimal precision is set instead of derived.
+*/
+FANN_EXTERNAL int FANN_API fann_save_to_fixed_reduced_precision(struct fann *ann, const char *configuration_file, unsigned int decimal_point);
 #endif
